@@ -182,8 +182,6 @@ HWND* hwndEdit = nullptr;
 bool keydown[0x30] = { false };
 
 DWORD WINAPI work(LPVOID) {
-	Vector3 const eye_pos{ 0, 0, 15 };
-
 	auto time = 0.f;
 	auto const time_step = 1 / fps;
 
@@ -193,6 +191,8 @@ DWORD WINAPI work(LPVOID) {
 	std::string buffer;
 	buffer.reserve(width * height + (height - 1));
 
+	Vector3 const eye_pos{ 0, 0, 15 };
+
 	// Calculate eye angles w.r.t. the origin
 	auto eye_dir = Vector3{ 0, 0, 0 } -eye_pos;
 	eye_dir.normalize();
@@ -201,13 +201,8 @@ DWORD WINAPI work(LPVOID) {
 	auto eye_up = eye_right.cross(eye_dir);
 	eye_up.normalize();
 
-	// Move the light source around
-	auto light_pos = Vector3{
-		10,
-		10,
-		5 };
+	Vector3 light_pos{ 10, 10, 5 };
 
-	// Pan the ball
 	Sphere ball{ Vector3{ 0, 0, 0 }, 1 };
 
 	for (;;) {
@@ -263,8 +258,6 @@ DWORD WINAPI work(LPVOID) {
 
 		buffer.clear();
 
-		//std::fill(keydown, keydown + 0x30, false);
-
 		// Sleep until the next time step, neglecting the time elapsed in this
 		// loop itself
 		time += time_step;
@@ -288,7 +281,8 @@ bool hook_GetMessageW(HMODULE module) {
 				}
 			}
 
-			// Constantly try to kill the edit control's focus (not sure what re-triggers it)
+			// Constantly try to kill the edit control's focus
+			//TODO figure out what re-triggers the focus
 			SendMessageA(*hwndEdit, WM_KILLFOCUS, 0, 0);
 
 			auto result = original(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax);
@@ -316,6 +310,7 @@ bool hook_GetMessageW(HMODULE module) {
 void initialize_values() {
 	auto base_addr = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
 
+	//TODO load from PDB
 	hwndEdit = reinterpret_cast<HWND*>(base_addr + 0x2'd368);
 }
 
