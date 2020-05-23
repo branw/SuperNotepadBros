@@ -10,8 +10,6 @@ public:
 
     reference operator()(size_t x, size_t y);
 
-    operator LPARAM();
-
     void replace(wchar_t from, wchar_t to);
 };
 

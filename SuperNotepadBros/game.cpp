@@ -1,6 +1,5 @@
 #include "game.hpp"
 
-#include <Windows.h>
 #include <algorithm>
 
 Field::Field(const wchar_t field[2026]) : std::wstring(field) {}
@@ -13,10 +12,6 @@ Field::Field() : std::wstring(81 * 25, L' ') {
 
 Field::reference Field::operator()(size_t x, size_t y) {
     return (*this)[x + (80 + 1) * y];
-}
-
-Field::operator LPARAM() {
-    return reinterpret_cast<LPARAM>(c_str());
 }
 
 void Field::replace(wchar_t from, wchar_t to) {
@@ -52,7 +47,7 @@ Game::Game() {
         L"#####################################3###1############   T))))##########X#######\n";
 }
 
-void Game::update(int dx = 0, int dy = 0) {
+void Game::update(int dx, int dy) {
     dx_ = dx;
     dy_ = dy;
 
