@@ -50,8 +50,8 @@ DWORD WINAPI work(LPVOID) {
         }
 
         auto field = game.field();
-        memcpy(buffer, field.c_str(), field.size() * sizeof(wchar_t));
-        
+        std::copy(field.begin(), field.end(), buffer);
+
         LocalUnlock(buffer);
 
         // Notify the control that the buffer changed

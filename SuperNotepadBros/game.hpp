@@ -2,15 +2,26 @@
 
 #include <string>
 
-class Field : public std::wstring {
+class Field {
 public:
-    Field(const wchar_t field[2026]);
-
     Field();
 
-    reference operator()(size_t x, size_t y);
+    Field(wchar_t const field[2026]);
 
-    void replace(wchar_t from, wchar_t to);
+    Field& operator=(Field const field);
+
+    wchar_t &operator()(size_t x, size_t y);
+
+    wchar_t* begin();
+
+    wchar_t* end();
+
+    wchar_t const * begin() const;
+
+    wchar_t const * end() const;
+
+private:
+    wchar_t buffer_[2026];
 };
 
 struct Game {
@@ -33,9 +44,11 @@ private:
 
     Field field_, next_field_;
 
+    void replace(wchar_t from, wchar_t to);
+
     void swap(wchar_t a, wchar_t b);
 
-    bool probe(int x, int y, wchar_t ch);
+    bool probe(size_t x, size_t y, wchar_t ch);
 
     void update_1();
 
